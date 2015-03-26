@@ -1,0 +1,63 @@
+Base path: C:/Program Files (x86)/Unity/Editor/Data
+Pipe name: \\.\pipe\UnityShaderCompiler-1-8704
+Cmd: getPlatforms
+Cmd: preprocess
+  insize=447 outsize=447 ok=1
+Cmd: preprocess
+  insize=1349 outsize=441 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1207 outsize=1128 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1207 outsize=1103 kw= ok=1
+Cmd: preprocess
+  insize=7594 outsize=476 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=7419 outsize=1128 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=7419 outsize=4345 kw= ok=1
+Cmd: preprocess
+  insize=1048 outsize=887 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=4871 outsize=2607 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=4871 outsize=1453 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2847 outsize=2875 kw=POINT ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2847 outsize=1810 kw=POINT ok=1
+Cmd: preprocess
+  insize=2371 outsize=473 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2197 outsize=1128 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2197 outsize=2444 kw= ok=1
+Cmd: preprocess
+  insize=2410 outsize=1760 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=952 outsize=1274 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=952 outsize=811 kw= ok=1
+Cmd: preprocess
+  insize=1576 outsize=991 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=867 outsize=1599 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=867 outsize=502 kw= ok=1
+Cmd: preprocess
+  insize=1445 outsize=1442 ok=1
+Cmd: preprocess
+  insize=1350 outsize=442 ok=1
+Cmd: preprocess
+  insize=1500 outsize=667 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1135 outsize=1461 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1135 outsize=1071 kw= ok=1
+Cmd: preprocess
+  insize=792 outsize=789 ok=1
+Cmd: preprocess
+  insize=2487 outsize=514 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2272 outsize=1128 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2272 outsize=2574 kw= ok=1

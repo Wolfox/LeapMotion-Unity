@@ -20,7 +20,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		PlayerMesh.renderer.material = NeutralMaterial;
+		PlayerMesh.GetComponent<Renderer>().material = NeutralMaterial;
 		onExit = false;
 		onPotion = false;
 		potionColor = LevelManager.GameColors.Neutral;
@@ -133,6 +133,6 @@ public class CharacterControllerScript : MonoBehaviour {
 	}
 
 	private void ChangeColor(Material color) {
-		PlayerMesh.renderer.material = color;
+		PlayerMesh.GetComponent<Renderer>().material = color;
 	}
 }

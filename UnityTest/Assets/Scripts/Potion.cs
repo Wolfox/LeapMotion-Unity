@@ -22,13 +22,13 @@ public class Potion : MonoBehaviour {
 	public void FillColor(LevelManager.GameColors colour) {
 		switch(colour) {
 			case LevelManager.GameColors.Red:
-				renderer.material = RedMaterial;
+				GetComponent<Renderer>().material = RedMaterial;
 				break;
 			case LevelManager.GameColors.Green:
-				renderer.material = GreenMaterial;
+				GetComponent<Renderer>().material = GreenMaterial;
 				break;
 			case LevelManager.GameColors.Blue:
-				renderer.material = BlueMaterial;
+				GetComponent<Renderer>().material = BlueMaterial;
 				break;
 			default:
 				throw new System.ArgumentNullException();

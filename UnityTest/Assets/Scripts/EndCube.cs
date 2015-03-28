@@ -16,9 +16,9 @@ public class EndCube : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rigidbody.angularVelocity = new Vector3(0.0f,1.0f,0.0f);
+		GetComponent<Rigidbody>().angularVelocity = new Vector3(0.0f,1.0f,0.0f);
 
-		renderer.material.color = Color.red;
+		GetComponent<Renderer>().material.color = Color.red;
 		initColor = Color.white;
 		endColor = Color.white;
 	}
@@ -26,7 +26,7 @@ public class EndCube : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(randomRotation) {
-			rigidbody.angularVelocity = new Vector3(Random.value * 0.5f,
+			GetComponent<Rigidbody>().angularVelocity = new Vector3(Random.value * 0.5f,
 			                                             Random.value * 1f,
 			                                             Random.value * 0.5f);
 
@@ -37,7 +37,7 @@ public class EndCube : MonoBehaviour {
 			}
 
 			float lerp = (Time.time - (nextColorTime - colorRate)) / colorRate;
-			renderer.material.color = Color.Lerp(initColor, endColor, lerp);
+			GetComponent<Renderer>().material.color = Color.Lerp(initColor, endColor, lerp);
 		}
 	}
 

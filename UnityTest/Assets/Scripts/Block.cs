@@ -63,12 +63,12 @@ public class Block : MonoBehaviour {
 
 	private void ChangeColor(Material color, string layer) {
 		Collider.layer = LayerMask.NameToLayer(layer);
-		Up.renderer.material = color;
-		Down.renderer.material = color;
-		Left.renderer.material = color;
-		Right.renderer.material = color;
-		Bottom.renderer.material = color;
-		Ceiling.renderer.material = color;
+		Up.GetComponent<Renderer>().material = color;
+		Down.GetComponent<Renderer>().material = color;
+		Left.GetComponent<Renderer>().material = color;
+		Right.GetComponent<Renderer>().material = color;
+		Bottom.GetComponent<Renderer>().material = color;
+		Ceiling.GetComponent<Renderer>().material = color;
 	}
 
 }

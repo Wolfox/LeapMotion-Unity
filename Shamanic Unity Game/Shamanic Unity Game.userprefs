@@ -1,9 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CubesLevelTestScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\Visual Studio Test\unity\UnityDllTest\Assets\TestHndCtrl.cs">
     <Files>
-      <File FileName="Assets\Scripts\LoadOnClick.cs" Line="14" Column="32" />
-      <File FileName="Assets\Scripts\CubesLevelTestScript.cs" Line="14" Column="29" />
+      <File FileName="..\..\..\Visual Studio Test\unity\UnityDllTest\Assets\TestHndCtrl.cs" Line="44" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

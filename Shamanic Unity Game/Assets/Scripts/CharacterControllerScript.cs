@@ -43,12 +43,14 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	void StartController() {
 		List<HiddenMarkovModel<MultivariateNormalDistribution>> models = new List<HiddenMarkovModel<MultivariateNormalDistribution>>();
-		
+
+		HiddenMarkovModel<MultivariateNormalDistribution> modelO = HelpLoad("GestureModels/OpenModel.bin");
 		HiddenMarkovModel<MultivariateNormalDistribution> modelF = HelpLoad("GestureModels/FrontModel.bin");
 		HiddenMarkovModel<MultivariateNormalDistribution> modelR = HelpLoad("GestureModels/RightModel.bin");
 		HiddenMarkovModel<MultivariateNormalDistribution> modelL = HelpLoad("GestureModels/LeftModel.bin");
 		HiddenMarkovModel<MultivariateNormalDistribution> modelB = HelpLoad("GestureModels/BackModel.bin");
 
+		models.Add (modelO);
 		models.Add (modelF);
 		models.Add (modelL);
 		models.Add (modelR);
@@ -111,15 +113,17 @@ public class CharacterControllerScript : MonoBehaviour {
 
 		switch(gestureNumber) {
 		case 0:
-			v = 1;
 			break;
 		case 1:
-			h = 1;
+			v = 1;
 			break;
 		case 2:
 			h = -1;
 			break;
 		case 3:
+			h = 1;
+			break;
+		case 4:
 			v = -1;
 			break;
 		}

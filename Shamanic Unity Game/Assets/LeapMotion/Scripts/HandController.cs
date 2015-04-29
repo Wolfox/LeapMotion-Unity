@@ -31,13 +31,6 @@ public class HandController : MonoBehaviour {
   public bool mirrorZAxis = false;
 
 
-	//TODO: REMOVE
-	public bool Test = true;
-	private HMM hmm = new HMM();
-	private Sample sample = new Sample();
-	//TODO: REMOVE
-
-
 
   // If hands are in charge of Destroying themselves, make this false.
   public bool destroyHands = true;
@@ -99,14 +92,6 @@ public class HandController : MonoBehaviour {
 
     if (enableRecordPlayback && recordingAsset != null)
       recorder_.Load(recordingAsset);
-
-		//TODO: REMOVE
-		Test = true;
-		if(Test) {
-			Debug.Log("TEST");
-			hmm.Load();
-			hmm.Finit();
-		}
   }
 
   public void IgnoreCollisionsWithHands(GameObject to_ignore, bool ignore = true) {
@@ -254,18 +239,6 @@ public class HandController : MonoBehaviour {
     
     UpdateRecorder();
     Frame frame = GetFrame();
-
-		//TODO:REMOVE
-		if(Test) {
-			Sign s = FrameToSign.Frame2Sign(frame);
-			sample.AddSign(s);
-			Sequence middleS = sample.getSequece();
-			Debug.Log(middleS.sequence.Count);
-			double[][] doubArr = middleS.GetArray();
-			int iTest = hmm.ElRun(doubArr);
-			Debug.Log(iTest);
-		}
-		//TODO:REMOVE
 
     if (frame != null && !flag_initialized_)
     {

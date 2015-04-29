@@ -1,8 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\Visual Studio Test\unity\UnityDllTest\Assets\TestHndCtrl.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\Tests\thesstest\Visual Studio Test\unity\UnityDllTest\Assets\Scripts\Test.cs">
     <Files>
-      <File FileName="..\..\..\Visual Studio Test\unity\UnityDllTest\Assets\TestHndCtrl.cs" Line="44" Column="3" />
+      <File FileName="Assets\LeapMotion\Scripts\Utils\LeapRecorder.cs" Line="136" Column="19" />
+      <File FileName="Assets\Scripts\CharacterControllerScript.cs" Line="120" Column="11" />
+      <File FileName="..\..\..\Tests\thesstest\Visual Studio Test\unity\UnityDllTest\Assets\Scripts\Test.cs" Line="90" Column="3" />
+      <File FileName="Assets\LeapMotion\Scripts\HandController.cs" Line="42" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

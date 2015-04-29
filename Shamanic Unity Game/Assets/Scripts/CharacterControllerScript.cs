@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Accord.Statistics.Models.Markov;
+using System.Collections.Generic;
+using Accord.Statistics.Distributions.Multivariate;
+using Sequences;
+using Leap;
+using HMM_Test_Library;
 
 public class CharacterControllerScript : MonoBehaviour {
 
@@ -7,6 +13,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	public GameObject PlayerMesh;
 	public GUIText GUIText;
+	public HandController controller;
 
 	public Material RedMaterial;
 	public Material GreenMaterial;
@@ -17,6 +24,13 @@ public class CharacterControllerScript : MonoBehaviour {
 	private bool onPotion;
 	private LevelManager.GameColors potionColor;
 
+	private Sample sample;
+	private Classifier classifier;
+	private int gestureNumber;
+
+	void Awake() {
+		sample = new Sample(50);
+	}
 
 	// Use this for initialization
 	void Start() {
@@ -24,6 +38,27 @@ public class CharacterControllerScript : MonoBehaviour {
 		onExit = false;
 		onPotion = false;
 		potionColor = LevelManager.GameColors.Neutral;
+		StartController();
+	}
+
+	void StartController() {
+		List<HiddenMarkovModel<MultivariateNormalDistribution>> models = new List<HiddenMarkovModel<MultivariateNormalDistribution>>();
+		
+		HiddenMarkovModel<MultivariateNormalDistribution> modelF = HelpLoad("GestureModels/FrontModel.bin");
+		HiddenMarkovModel<MultivariateNormalDistribution> modelR = HelpLoad("GestureModels/RightModel.bin");
+		HiddenMarkovModel<MultivariateNormalDistribution> modelL = HelpLoad("GestureModels/LeftModel.bin");
+		HiddenMarkovModel<MultivariateNormalDistribution> modelB = HelpLoad("GestureModels/BackModel.bin");
+
+		models.Add (modelF);
+		models.Add (modelL);
+		models.Add (modelR);
+		models.Add (modelB);
+		
+		classifier = new Classifier(models);
+	}
+
+	HiddenMarkovModel<MultivariateNormalDistribution> HelpLoad(string path) {
+		return HiddenMarkovModel<MultivariateNormalDistribution>.Load(path);
 	}
 
 	// Update is called once per frame
@@ -57,9 +92,40 @@ public class CharacterControllerScript : MonoBehaviour {
 		}
 	}
 
+	void SaveFrame() {
+		Frame frame = controller.GetFrame();
+		Sign s = FrameToSign.Frame2Sign(frame);
+		sample.AddSign(s);
+	}
+
 	void FixedUpdate() {
+
+		SaveFrame();
+
+		gestureNumber = classifier.Run(sample.getSequence().GetArray());
+
+		Debug.Log(gestureNumber);
+
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
+
+		switch(gestureNumber) {
+		case 0:
+			v = 1;
+			break;
+		case 1:
+			h = 1;
+			break;
+		case 2:
+			h = -1;
+			break;
+		case 3:
+			v = -1;
+			break;
+		}
+
+		/*float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");*/
 
 		if(v != 0){
 			Move (v);

@@ -149,7 +149,6 @@
      <Compile Include="Assets\Scripts\Potion.cs" />
      <Compile Include="Assets\Scripts\ReadTest.cs" />
      <None Include="Assets\LeapMotion\Resources\LeapIRUndistorted.shader" />
-     <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotion\Materials\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\LeapMotion\Resources\LeapIRDistorted.shader" />
      <None Include="Assets\LeapMotion+OVR\README_BEFORE_UPDATING.txt" />

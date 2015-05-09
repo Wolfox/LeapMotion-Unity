@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Accord.Statistics.Distributions.Multivariate;
 using Sequences;
 using Leap;
-using HMM_Test_Library;
+//using HMM_Test_Library;
 
 public class CharacterControllerScript : MonoBehaviour {
 
@@ -43,6 +43,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	void StartController() {
 		List<HiddenMarkovModel<MultivariateNormalDistribution>> models = new List<HiddenMarkovModel<MultivariateNormalDistribution>>();
+		List<string> names = new List<string>();
 
 		HiddenMarkovModel<MultivariateNormalDistribution> modelO = HelpLoad("GestureModels/OpenModel.bin");
 		HiddenMarkovModel<MultivariateNormalDistribution> modelF = HelpLoad("GestureModels/FrontModel.bin");
@@ -51,12 +52,18 @@ public class CharacterControllerScript : MonoBehaviour {
 		HiddenMarkovModel<MultivariateNormalDistribution> modelB = HelpLoad("GestureModels/BackModel.bin");
 
 		models.Add (modelO);
+		names.Add("Open");
 		models.Add (modelF);
+		names.Add("MoveFront");
 		models.Add (modelL);
+		names.Add("MoveLeft");
 		models.Add (modelR);
+		names.Add("MoveRigh");
 		models.Add (modelB);
+		names.Add("MoveBack");
 		
-		classifier = new Classifier(models);
+		classifier = new Classifier(models, names);
+		classifier.StartClassifier();
 	}
 
 	HiddenMarkovModel<MultivariateNormalDistribution> HelpLoad(string path) {
@@ -104,7 +111,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
 		SaveFrame();
 
-		gestureNumber = classifier.Run(sample.getSequence().GetArray());
+		gestureNumber = classifier.ComputeToInt(sample.getSequence().GetArray());
 
 		Debug.Log(gestureNumber);
 

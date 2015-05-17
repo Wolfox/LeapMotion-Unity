@@ -143,7 +143,9 @@
      <Compile Include="Assets\Scripts\CameraManager.cs" />
      <Compile Include="Assets\Scripts\CharacterControllerScript.cs" />
      <Compile Include="Assets\Scripts\CubesLevelTestScript.cs" />
+     <Compile Include="Assets\Scripts\Culture.cs" />
      <Compile Include="Assets\Scripts\EndCube.cs" />
+     <Compile Include="Assets\Scripts\GameState.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\LoadOnClick.cs" />
      <Compile Include="Assets\Scripts\Potion.cs" />

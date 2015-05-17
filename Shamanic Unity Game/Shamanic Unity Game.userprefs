@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CharacterControllerScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Culture.cs">
     <Files>
-      <File FileName="Assets\Scripts\CharacterControllerScript.cs" Line="66" Column="32" />
-      <File FileName="Assets\LeapMotion\Scripts\HandController.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\Tests\thesstest\Visual Studio Test\unity\UnityDllTest\Assets\Scripts\Test.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Culture.cs" Line="78" Column="5" />
+      <File FileName="Assets\Scripts\CharacterControllerScript.cs" Line="39" Column="89" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

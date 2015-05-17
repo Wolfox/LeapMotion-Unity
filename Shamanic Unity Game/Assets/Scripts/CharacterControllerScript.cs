@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Accord.Statistics.Models.Markov;
-using System.Collections.Generic;
 using Accord.Statistics.Distributions.Multivariate;
+using System.Collections.Generic;
 using Sequences;
 using Leap;
 //using HMM_Test_Library;
@@ -26,10 +26,21 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	private Sample sample;
 	private Classifier classifier;
-	private int gestureNumber;
+	private string action;
+
+	private State gameState;
 
 	void Awake() {
 		sample = new Sample(50);
+		StartState();
+		if(!Culture.alreadyStarted) {
+			Culture.CreateModelFromFrames("Frames/OPEN_FRONT.frs", "GestureModels/OPEN_FRONT.bin");
+			Culture.CreateModelFromFrames("Frames/OPEN_RIGHT.frs", "GestureModels/OPEN_RIGHT.bin");
+			Culture.CreateModelFromFrames("Frames/OPEN_LEFT.frs", "GestureModels/OPEN_LEFT.bin");
+			Culture.InitAllModels();
+			Culture.InitCulturalLayer();
+			Culture.alreadyStarted = true;
+		}
 	}
 
 	// Use this for initialization
@@ -41,28 +52,18 @@ public class CharacterControllerScript : MonoBehaviour {
 		StartController();
 	}
 
+	void StartState() {
+		gameState = new State("Game State");
+		gameState.AddAction("NOTHING");
+		gameState.AddAction("FRONT");
+		gameState.AddAction("RIGHT");
+		gameState.AddAction("LEFT");
+		gameState.AddAction("BACK");
+	}
+
 	void StartController() {
-		List<HiddenMarkovModel<MultivariateNormalDistribution>> models = new List<HiddenMarkovModel<MultivariateNormalDistribution>>();
-		List<string> names = new List<string>();
 
-		HiddenMarkovModel<MultivariateNormalDistribution> modelO = HelpLoad("GestureModels/OpenModel.bin");
-		HiddenMarkovModel<MultivariateNormalDistribution> modelF = HelpLoad("GestureModels/FrontModel.bin");
-		HiddenMarkovModel<MultivariateNormalDistribution> modelR = HelpLoad("GestureModels/RightModel.bin");
-		HiddenMarkovModel<MultivariateNormalDistribution> modelL = HelpLoad("GestureModels/LeftModel.bin");
-		HiddenMarkovModel<MultivariateNormalDistribution> modelB = HelpLoad("GestureModels/BackModel.bin");
-
-		models.Add (modelO);
-		names.Add("Open");
-		models.Add (modelF);
-		names.Add("MoveFront");
-		models.Add (modelL);
-		names.Add("MoveLeft");
-		models.Add (modelR);
-		names.Add("MoveRigh");
-		models.Add (modelB);
-		names.Add("MoveBack");
-		
-		classifier = new Classifier(models, names);
+		classifier = new Classifier(Culture.GetModels(gameState), gameState.GetActions());
 		classifier.StartClassifier();
 	}
 
@@ -72,6 +73,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
 		if(Input.GetButtonDown ("Grab") && onExit) {
 			Application.LoadLevel(0);
 		}
@@ -109,34 +111,30 @@ public class CharacterControllerScript : MonoBehaviour {
 
 	void FixedUpdate() {
 
+		float v = 0;
+		float h = 0;
+		
 		SaveFrame();
+		action = classifier.ComputeToString(sample.getSequence().GetArray());
 
-		gestureNumber = classifier.ComputeToInt(sample.getSequence().GetArray());
+		Debug.Log(action);
 
-		Debug.Log(gestureNumber);
-
-		float h = Input.GetAxis("Horizontal");
-		float v = Input.GetAxis("Vertical");
-
-		switch(gestureNumber) {
-		case 0:
+		switch(action) {
+		case "NOTHING":
 			break;
-		case 1:
+		case "FRONT":
 			v = 1;
 			break;
-		case 2:
-			h = -1;
-			break;
-		case 3:
-			h = 1;
-			break;
-		case 4:
+		case "BACK":
 			v = -1;
 			break;
+		case "RIGHT":
+			h = 1;
+			break;
+		case "LEFT":
+			h = -1;
+			break;
 		}
-
-		/*float h = Input.GetAxis("Horizontal");
-		float v = Input.GetAxis("Vertical");*/
 
 		if(v != 0){
 			Move (v);

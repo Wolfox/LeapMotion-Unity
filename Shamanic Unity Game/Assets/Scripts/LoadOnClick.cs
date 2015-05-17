@@ -14,6 +14,10 @@ public class LoadOnClick : MonoBehaviour {
 		Application.LoadLevel(level);
 	}
 
+	public void ChangeCulture(string culture) {
+		Culture.culture = culture;
+	}
+
 	public void Quit() {
 		Application.Quit();
 	}

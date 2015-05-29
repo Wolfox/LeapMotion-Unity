@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
@@ -9,38 +10,33 @@ using Leap;
 
 public class CharacterControllerScript : MonoBehaviour {
 
-	//public Transform characterCamera;
+	static public bool isPaused = false;
 
 	public GameObject PlayerMesh;
-	public GUIText GUIText;
+	public GUIScript guiScript;
 	public HandController controller;
 
 	public Material RedMaterial;
 	public Material GreenMaterial;
 	public Material BlueMaterial;
 	public Material NeutralMaterial;
-
+	
+	private LevelManager.GameColors potionColor;
 	private bool onExit;
 	private bool onPotion;
-	private LevelManager.GameColors potionColor;
+
+	private float horzInput;
+	private float vertInput;
 
 	private Sample sample;
 	private Classifier classifier;
-	private string action;
-
+	private string action = "";
 	private State gameState;
 
 	void Awake() {
 		sample = new Sample(50);
+		Culture.StartCulture();
 		StartState();
-		if(!Culture.alreadyStarted) {
-			Culture.CreateModelFromFrames("Frames/OPEN_FRONT.frs", "GestureModels/OPEN_FRONT.bin");
-			Culture.CreateModelFromFrames("Frames/OPEN_RIGHT.frs", "GestureModels/OPEN_RIGHT.bin");
-			Culture.CreateModelFromFrames("Frames/OPEN_LEFT.frs", "GestureModels/OPEN_LEFT.bin");
-			Culture.InitAllModels();
-			Culture.InitCulturalLayer();
-			Culture.alreadyStarted = true;
-		}
 	}
 
 	// Use this for initialization
@@ -49,20 +45,58 @@ public class CharacterControllerScript : MonoBehaviour {
 		onExit = false;
 		onPotion = false;
 		potionColor = LevelManager.GameColors.Neutral;
-		StartController();
 	}
 
-	void StartState() {
+	void StartStateGame() {
 		gameState = new State("Game State");
 		gameState.AddAction("NOTHING");
 		gameState.AddAction("FRONT");
 		gameState.AddAction("RIGHT");
 		gameState.AddAction("LEFT");
 		gameState.AddAction("BACK");
+		//gameState.AddAction("DRINK");
+		//gameState.AddAction("GRAB");
+		gameState.AddAction("MUTE");
+		//gameState.AddAction("UNMUTE");
+		gameState.AddAction("PAUSE");
+		StartClassifier();
 	}
 
-	void StartController() {
+	void StartStateTest() {
+		gameState = new State("Test State");
+		gameState.AddAction("NOTHING");
+		gameState.AddAction("TEST1");
+		gameState.AddAction("TEST2");
+		gameState.AddAction("TEST3");
+		gameState.AddAction("TEST4");
+		gameState.AddAction("TEST5");
+		gameState.AddAction("TEST6");
+		StartClassifier();
+	}
 
+	void StartStatePause() {
+		gameState = new State("Test State");
+		gameState.AddAction("NOTHING");
+		gameState.AddAction("RESUME");
+		gameState.AddAction("MUTE");
+		gameState.AddAction("UNMUTE");
+		StartClassifier();
+	}
+
+	void StartStateNumber() {
+		gameState = new State("Number State");
+		gameState.AddAction("NOTHING");
+		gameState.AddAction("NUMBER_1");
+		gameState.AddAction("NUMBER_2");
+		gameState.AddAction("NUMBER_3");
+		StartClassifier();
+	}
+
+	void StartState() {
+		StartStateGame();
+	}
+
+	void StartClassifier() {
 		classifier = new Classifier(Culture.GetModels(gameState), gameState.GetActions());
 		classifier.StartClassifier();
 	}
@@ -75,74 +109,73 @@ public class CharacterControllerScript : MonoBehaviour {
 	void Update () {
 
 		if(Input.GetButtonDown ("Grab") && onExit) {
-			Application.LoadLevel(0);
+			Grab();
 		}
 		if(Input.GetButtonDown("Drink") && onPotion) {
-			switch(potionColor) {
-				case LevelManager.GameColors.Red:
-					gameObject.layer = LayerMask.NameToLayer("Red");
-					GUIText.text = "RED";
-					GUIText.color = Color.red;
-					break;
-				case LevelManager.GameColors.Green:
-					gameObject.layer = LayerMask.NameToLayer("Green");
-					GUIText.text = "GREEN";
-					GUIText.color = Color.green;
-					break;
-				case LevelManager.GameColors.Blue:
-					gameObject.layer = LayerMask.NameToLayer("Blue");
-					GUIText.text = "BLUE";
-					GUIText.color = Color.blue;
-					break;
-				case LevelManager.GameColors.Neutral:
-					gameObject.layer = 0;
-					GUIText.text = "";
-					GUIText.color = Color.white;
-					break;
-			}
+			Drink();
+		}
+		if(Input.GetButtonDown("Pause")) {
+			Pause();
 		}
 	}
 
 	void SaveFrame() {
 		Frame frame = controller.GetFrame();
-		Sign s = FrameToSign.Frame2Sign(frame);
+		Sign s = Sequences.Utils.FrameToSign(frame);
 		sample.AddSign(s);
 	}
 
 	void FixedUpdate() {
 
-		float v = 0;
-		float h = 0;
+		vertInput = 0;
+		horzInput = 0;
 		
 		SaveFrame();
-		action = classifier.ComputeToString(sample.getSequence().GetArray());
+
+		CheckFrame();
+
+		float keyH = Input.GetAxis("Horizontal");
+		float keyV = Input.GetAxis("Vertical");
+
+		if(keyH != 0) {horzInput = keyH;}
+		if(keyV != 0) {vertInput = keyV;}
+
+		MoveAndRotate();
+	}
+
+	void CheckFrame() {
+		double[][] sequence = sample.getSequence().GetArray();
+
+		/*List<string> actions = gameState.GetActions();
+		for(int i = 0; i < actions.Count; i++) {
+			Debug.Log (actions[i]+ "(" + i +") - " + classifier.testModel(i, sequence));
+		}*/
+
+		//classifier.testModel(0,sequence);
+
+		action = classifier.ComputeToString(sequence);
 
 		Debug.Log(action);
-
-		switch(action) {
+		
+		/*switch(action) {
 		case "NOTHING":
 			break;
 		case "FRONT":
-			v = 1;
+			vertInput = 1;
 			break;
 		case "BACK":
-			v = -1;
+			vertInput = -1;
 			break;
 		case "RIGHT":
-			h = 1;
+			horzInput = 1;
 			break;
 		case "LEFT":
-			h = -1;
+			horzInput = -1;
 			break;
-		}
-
-		if(v != 0){
-			Move (v);
-		}
-
-		if(h != 0) {
-			Rotate(h);
-		}
+		case "PAUSE":
+			Pause();
+			break;
+		}*/
 	}
 
 	void OnTriggerEnter (Collider other) {
@@ -173,24 +206,61 @@ public class CharacterControllerScript : MonoBehaviour {
 		}
 	}
 
+	void MoveAndRotate() {
+		if(vertInput != 0) { Move (vertInput); }
+
+		if(horzInput != 0) {  Rotate(horzInput); }
+	}
+
 	void Move (float value) {
+		if(isPaused) {return;}
 
 		Vector3 target = transform.position + transform.forward*value;
 		target.y = transform.position.y;
-
 		transform.position = Vector3.MoveTowards(transform.position, target, 0.1f);
 	}
 
 	void Rotate (float value) {
-
+		if(isPaused) {return;}
 		transform.RotateAround(transform.position, Vector3.up, value*3);
-		//transform.Rotate(new Vector3(0.0f,value,0.0f));
-		//float target = transform.rotation.eulerAngles.y + value;
-		//transform.rotation = Quaternion.AngleAxis(target,Vector3.up);
 	}
 
-	public void FillColor(LevelManager.GameColors colour) {
-		switch(colour) {
+	void Grab() {
+		Application.LoadLevel(0);
+	}
+
+	void Drink() {
+		switch(potionColor) {
+		case LevelManager.GameColors.Red:
+			gameObject.layer = LayerMask.NameToLayer("Red");
+			guiScript.ChangeText("RED");
+			guiScript.ChangeColor(Color.red);
+			break;
+		case LevelManager.GameColors.Green:
+			gameObject.layer = LayerMask.NameToLayer("Green");
+			guiScript.ChangeText("GREEN");
+			guiScript.ChangeColor(Color.green);
+			break;
+		case LevelManager.GameColors.Blue:
+			gameObject.layer = LayerMask.NameToLayer("Blue");
+			guiScript.ChangeText("BLUE");
+			guiScript.ChangeColor(Color.blue);
+			break;
+		case LevelManager.GameColors.Neutral:
+			gameObject.layer = 0;
+			guiScript.ChangeText("");
+			guiScript.ChangeColor(Color.clear);
+			break;
+		}
+	}
+
+	void Pause() {
+		isPaused = true;
+		guiScript.Pause();
+	}
+
+	public void FillColor(LevelManager.GameColors color) {
+		switch(color) {
 			case LevelManager.GameColors.Red:
 				ChangeColor(RedMaterial);
 				break;

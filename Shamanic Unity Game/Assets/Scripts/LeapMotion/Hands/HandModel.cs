@@ -9,6 +9,8 @@ using System.Collections;
 using Leap;
 
 // Interface for all hands.
+
+
 public abstract class HandModel : MonoBehaviour {
 
   public const int NUM_FINGERS = 5;
@@ -97,15 +99,15 @@ public abstract class HandModel : MonoBehaviour {
     return hand_;
   }
 
-  public void SetLeapHand(Hand hand) {
-    hand_ = hand;
-    for (int i = 0; i < fingers.Length; ++i) {
-      if (fingers[i] != null) {
-        fingers[i].SetLeapHand(hand_);
-        fingers[i].SetOffset(GetHandOffset());
-      }
-    }
-  }
+  public void SetLeapHand (Hand hand) {
+		hand_ = hand;
+		for (int i = 0; i < fingers.Length; ++i) {
+			if (fingers [i] != null) {
+				fingers [i].SetLeapHand (hand_);
+				fingers [i].SetOffset (GetHandOffset ());
+			}
+		}
+	}
 
   public void MirrorZAxis(bool mirror = true) {
     mirror_z_axis_ = mirror;
@@ -130,6 +132,7 @@ public abstract class HandModel : MonoBehaviour {
         fingers[i].SetController(controller_);
     }
   }
+
 
   public abstract void InitHand();
 

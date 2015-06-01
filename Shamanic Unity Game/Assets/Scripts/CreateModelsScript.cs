@@ -11,7 +11,12 @@ public class CreateModelsScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		CreateModels();
+		CreateModelFromFrames("Frames/POINT_FRONT.frs", "GestureModels/POINT_FRONT.bin");
+		CreateModelFromFrames("Frames/POINT_RIGHT.frs", "GestureModels/POINT_RIGHT.bin");
+		CreateModelFromFrames("Frames/POINT_LEFT.frs", "GestureModels/POINT_LEFT.bin");
+		//CreateModelFromFrames("Frames/GRAB.frs", "GestureModels/GRAB.bin");
+		//CreateModelFromFrames("Frames/HAND_ROTATING.frs", "GestureModels/HAND_ROTATING.bin");
+		//CreateModels();
 		//CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
 		//CreateModelFromFrames("Frames/CLOSE_HAND.frs", "GestureModels/CLOSE_HAND.bin");
 		
@@ -21,13 +26,14 @@ public class CreateModelsScript : MonoBehaviour {
 	}
 
 	public void CreateModels() {
-
-		//CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
-		//CreateModelFromFrames("Frames/CLOSE_HAND.frs", "GestureModels/CLOSE_HAND.bin");
-		//CreateMoveModels();
-		//CreateNumberModels();
-		//CreatePauseModels();
-		//CreateSoundModels();
+		CreateModelFromFrames("Frames/DRINK_NL.frs", "GestureModels/DRINK_NL.bin");
+		CreateModelFromFrames("Frames/DRINK_PT.frs", "GestureModels/DRINK_PT.bin");
+		CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
+		CreateModelFromFrames("Frames/CLOSE_HAND.frs", "GestureModels/CLOSE_HAND.bin");
+		CreateMoveModels();
+		CreateNumberModels();
+		CreatePauseModels();
+		CreateSoundModels();
 		CreateOptionsModels();
 	}
 
@@ -67,13 +73,13 @@ public class CreateModelsScript : MonoBehaviour {
 	}
 
 	public void CreateTestModels() {
-		CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
+		/*CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
 		CreateModelFromFrames("Frames/HALT_HAND.frs", "GestureModels/HALT_HAND.bin");
 		CreateModelFromFrames("Frames/HALT_HANDR.frs", "GestureModels/HALT_HANDR.bin");
 		CreateModelFromFrames("Frames/HALT_HANDR_2x.frs", "GestureModels/HALT_HANDR_2x.bin");
 		CreateModelFromFrames("Frames/HALT_HAND_half.frs", "GestureModels/HALT_HAND_half.bin");
 		CreateModelFromFrames("Frames/HALT_HAND_half2x.frs", "GestureModels/HALT_HAND_half2x.bin");
-		CreateModelFromFrames("Frames/HALT_HAND_alt.frs", "GestureModels/HALT_HAND_alt.bin");
+		CreateModelFromFrames("Frames/HALT_HAND_alt.frs", "GestureModels/HALT_HAND_alt.bin");*/
 	}
 
 	public static void CreateModelFromFrames(string readPath, string writePath) {

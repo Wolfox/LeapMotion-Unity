@@ -111,18 +111,24 @@ public class LevelManager : MonoBehaviour {
 				if(objLevel[i][j]) {
 					Block block = (Block)objLevel[i][j].GetComponent(typeof(Block));
 					switch(level[i][j]) {
-						case LvlVal.RBlock:
+					case LvlVal.RBlock:
+						if(Game.numberOfColors >= 3) {
 							block.FillColor(GameColors.Red);
-							break;
-						case LvlVal.GBlock:
+						}
+						break;
+					case LvlVal.GBlock:
+						if(Game.numberOfColors >= 2) {
 							block.FillColor(GameColors.Green);
-							break;
-						case LvlVal.BBlock:
+						}
+						break;
+					case LvlVal.BBlock:
+						if(Game.numberOfColors >= 1) {
 							block.FillColor(GameColors.Blue);
-							break;
-						default:
-							block.FillColor(GameColors.Neutral);
-							break;
+						}
+						break;
+					default:
+						block.FillColor(GameColors.Neutral);
+						break;
 					}
 				}
 			}
@@ -136,17 +142,23 @@ public class LevelManager : MonoBehaviour {
 					Vector3 pos = objLevel[i][j].transform.position;
 					pos.y = Player.transform.position.y;
 					switch(level[i][j]) {
-						case LvlVal.RPotion:
+					case LvlVal.RPotion:
+						if(Game.numberOfColors >= 3) {
 							NewPotion(pos, GameColors.Red);
-							break;
-						case LvlVal.GPotion:
+						}
+						break;
+					case LvlVal.GPotion:
+						if(Game.numberOfColors >= 2) {
 							NewPotion(pos, GameColors.Green);
-							break;
-						case LvlVal.BPotion:
+						}
+						break;
+					case LvlVal.BPotion:
+						if(Game.numberOfColors >= 1) {
 							NewPotion(pos, GameColors.Blue);
-							break;
-						default:
-							break;
+						}
+						break;
+					default:
+						break;
 					}
 				}
 			}

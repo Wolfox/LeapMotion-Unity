@@ -51,11 +51,12 @@
      <Compile Include="Assets\Scripts\CharacterControllerScript.cs" />
      <Compile Include="Assets\Scripts\CreateModelsScript.cs" />
      <Compile Include="Assets\Scripts\CubesLevelTestScript.cs" />
-     <Compile Include="Assets\Scripts\Culture.cs" />
      <Compile Include="Assets\Scripts\EndCube.cs" />
      <Compile Include="Assets\Scripts\GUIScript.cs" />
+     <Compile Include="Assets\Scripts\GameScript.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\HandController.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\Hands\FingerModel.cs" />
+     <Compile Include="Assets\Scripts\LeapMotion\Hands\HandGesture.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\Hands\HandModel.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\Hands\RigidFinger.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\Hands\RigidHand.cs" />
@@ -82,9 +83,11 @@
      <Compile Include="Assets\Scripts\LeapMotion\Utils\Utils.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuScript.cs" />
+     <Compile Include="Assets\Scripts\NumberPanelScript.cs" />
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
      <Compile Include="Assets\Scripts\Potion.cs" />
      <Compile Include="Assets\Scripts\ReadTest.cs" />
+     <Compile Include="Assets\Scripts\StartGamePanelScript.cs" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\Plugins\x86_64\donotdelete.txt" />
      <None Include="Assets\Shaders\RimShading.shader" />

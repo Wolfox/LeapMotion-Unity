@@ -10,46 +10,31 @@ using Sequences;
 public class OptionsMenuScript : MonoBehaviour {
 
 	private enum OptionsMenuState {Main, Culture, Colors};
+	private OptionsMenuState state;
 
 	public GameObject culturePanel;
 	public GameObject numOfColorsPanel;
 	public Transform testCube;
-	
-	private OptionsMenuState state;
-	private Button[] buttons = {};
 
-	private Controller controller;
-	private Sample sample;
-	private GestureList gestures = new GestureList();
+	public HandController controller;
+	private Button[] buttons = {};
 	private Classifier classifier;
-	private State culturalState;
+	//private Controller controller;
+	//private SequenceBuffer buffer;
+	//private Frame prevFrame = null;
+	//private GestureList gestures = new GestureList();
+	//private State culturalState;
 
 	public void Awake() {
-		sample = new Sample(50);
-		Culture.StartCulture();
-		culturalState = new State("Numbers");
-		culturalState.AddAction("NOTHING");
-		culturalState.AddAction("NUMBER_1");
-		culturalState.AddAction("NUMBER_2");
-		culturalState.AddAction("NUMBER_3");
-		classifier = new Classifier(Culture.GetModels(culturalState), culturalState.GetActions());
-		classifier.StartClassifier();
+		//buffer = new SequenceBuffer(50);
+		Game.StartCulture();
+		//culturalState = Game.ChooseNumberState();
+		classifier = Game.GetClassifier(Game.ChooseNumberState());
 	}
 
 	public void Start() {
-		controller = new Controller();
-		controller.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
-		controller.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
-
-		controller.Config.SetFloat("Gesture.ScreenTap.MinForwardVelocity", 30.0f);
-		controller.Config.SetFloat("Gesture.ScreenTap.HistorySeconds", .5f);
-		controller.Config.SetFloat("Gesture.ScreenTap.MinDistance", 1.0f);
-
-		controller.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
-		controller.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
-		controller.Config.SetFloat("Gesture.KeyTap.MinDistance", 1.0f);
-		controller.Config.Save();
-
+		state = OptionsMenuState.Main;
+		controller.EnableTapGestures();
 		UpdateButtons();
 	}
 
@@ -58,41 +43,42 @@ public class OptionsMenuScript : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		Frame frame = controller.Frame();
+		/*Frame frame = controller.Frame();
 
-		if(state == OptionsMenuState.Colors) {
-			gestures = new GestureList();
-			Sign s = Sequences.Utils.FrameToSign(frame);
-			sample.AddSign(s);
-		} else {
-			sample.ClearSequence();
-			gestures = frame.Gestures();
-		}
+		if(frame.Id != prevFrame.Id) {
+			if(state == OptionsMenuState.Colors) {
+				gestures = new GestureList();
+				Sign s = Sequences.Utils.FrameToSign(frame, prevFrame);
+				buffer.AddSign(s);
+			} else {
+				buffer.ClearSequence();
+				gestures = frame.Gestures();
+			}
+			/*prevFrame = frame;
+		}*/
 	}
 
 	public void Update() {
-		if(state == OptionsMenuState.Colors) {
+		if(state == OptionsMenuState.Colors && Game.culture != "") {
 			NumberGestures();
-		} else {
-			TapGestures();
 		}
-
+		TapGestures();
 	}
 
 	private void TapGestures() {
-		/*Frame frame = controller.Frame();
-		GestureList gestures = frame.Gestures();*/
+
+		GestureList gestures = controller.GetTapGestures();
 
 		for(int i = 0; i < gestures.Count; i++) {
 			Gesture gesture = gestures[i];
 			Vector3 vect = new Vector3();
 			if(gesture.Type == ScreenTapGesture.ClassType()) {
-				Debug.Log ("screen");
+				//Debug.Log ("screen");
 				ScreenTapGesture screentapGesture = new ScreenTapGesture(gesture);
 				vect = screentapGesture.Position.ToUnityScaled();
 			}
 			if(gesture.Type == KeyTapGesture.ClassType()) {
-				Debug.Log ("key");
+				//Debug.Log ("key");
 				KeyTapGesture screentapGesture = new KeyTapGesture(gesture);
 				vect = screentapGesture.Position.ToUnityScaled();
 			}
@@ -113,9 +99,28 @@ public class OptionsMenuScript : MonoBehaviour {
 	}
 
 	private void NumberGestures() {
-		double[][] sequence = sample.getSequence().GetArray();
-		string action = classifier.ComputeToString(sequence);
-		Debug.Log(action);
+		string action = "";
+		List<string> allActions = controller.GetGestures(classifier);
+		List<string> actions = Game.UpdateActions(allActions);
+
+		if(actions.Count == 1) {
+			action = actions[0];
+		}
+
+		switch(action) {
+			case "NUMBER_1":
+				ChangeNumOfColors(1);
+				break;
+			case "NUMBER_2":
+				ChangeNumOfColors(2);
+				break;
+			case "NUMBER_3":
+				ChangeNumOfColors(3);
+				break;
+			case "NOTHING":
+			default:
+				break;
+		}
 	}
 
 	private bool ContainInWorld(Vector3[] corners, Vector3 point) {
@@ -163,16 +168,19 @@ public class OptionsMenuScript : MonoBehaviour {
 	private void OpenNumOfColors() {
 		state = OptionsMenuState.Colors;
 		numOfColorsPanel.SetActive(true);
+		numOfColorsPanel.GetComponent<NumberPanelScript>().UpdateInterface();
+		UpdateButtons();
 	}
 
 	public void ChangeCulture(string culture) {
-		Culture.culture = culture;
+		Game.culture = culture;
 		state = OptionsMenuState.Main;
 		culturePanel.SetActive(false);
 		UpdateButtons();
 	}
 
 	public void ChangeNumOfColors(int number) {
+		Game.numberOfColors = number;
 		state = OptionsMenuState.Main;
 		numOfColorsPanel.SetActive(false);
 		UpdateButtons();

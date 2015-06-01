@@ -10,11 +10,13 @@ using Leap;
 
 public class CharacterControllerScript : MonoBehaviour {
 
-	static public bool isPaused = false;
+	private enum GameState {Game, Pause, EndGame};
+	private GameState state = GameState.Game;
 
 	public GameObject PlayerMesh;
 	public GUIScript guiScript;
 	public HandController controller;
+	public AudioSource audio;
 
 	public Material RedMaterial;
 	public Material GreenMaterial;
@@ -28,15 +30,12 @@ public class CharacterControllerScript : MonoBehaviour {
 	private float horzInput;
 	private float vertInput;
 
-	private Sample sample;
 	private Classifier classifier;
-	private string action = "";
-	private State gameState;
+	//private string action = "";
+	//private State gameState;
 
 	void Awake() {
-		sample = new Sample(50);
-		Culture.StartCulture();
-		StartState();
+		Game.StartCulture();
 	}
 
 	// Use this for initialization
@@ -45,60 +44,12 @@ public class CharacterControllerScript : MonoBehaviour {
 		onExit = false;
 		onPotion = false;
 		potionColor = LevelManager.GameColors.Neutral;
+		UpdateState(Game.GameState());
 	}
 
-	void StartStateGame() {
-		gameState = new State("Game State");
-		gameState.AddAction("NOTHING");
-		gameState.AddAction("FRONT");
-		gameState.AddAction("RIGHT");
-		gameState.AddAction("LEFT");
-		gameState.AddAction("BACK");
-		//gameState.AddAction("DRINK");
-		//gameState.AddAction("GRAB");
-		gameState.AddAction("MUTE");
-		//gameState.AddAction("UNMUTE");
-		gameState.AddAction("PAUSE");
-		StartClassifier();
-	}
-
-	void StartStateTest() {
-		gameState = new State("Test State");
-		gameState.AddAction("NOTHING");
-		gameState.AddAction("TEST1");
-		gameState.AddAction("TEST2");
-		gameState.AddAction("TEST3");
-		gameState.AddAction("TEST4");
-		gameState.AddAction("TEST5");
-		gameState.AddAction("TEST6");
-		StartClassifier();
-	}
-
-	void StartStatePause() {
-		gameState = new State("Test State");
-		gameState.AddAction("NOTHING");
-		gameState.AddAction("RESUME");
-		gameState.AddAction("MUTE");
-		gameState.AddAction("UNMUTE");
-		StartClassifier();
-	}
-
-	void StartStateNumber() {
-		gameState = new State("Number State");
-		gameState.AddAction("NOTHING");
-		gameState.AddAction("NUMBER_1");
-		gameState.AddAction("NUMBER_2");
-		gameState.AddAction("NUMBER_3");
-		StartClassifier();
-	}
-
-	void StartState() {
-		StartStateGame();
-	}
-
-	void StartClassifier() {
-		classifier = new Classifier(Culture.GetModels(gameState), gameState.GetActions());
-		classifier.StartClassifier();
+	void UpdateState(State state) {
+		//gameState = state;
+		classifier = Game.GetClassifier(state);
 	}
 
 	HiddenMarkovModel<MultivariateNormalDistribution> HelpLoad(string path) {
@@ -119,20 +70,27 @@ public class CharacterControllerScript : MonoBehaviour {
 		}
 	}
 
-	void SaveFrame() {
+	/*void SaveFrame() {
 		Frame frame = controller.GetFrame();
-		Sign s = Sequences.Utils.FrameToSign(frame);
-		sample.AddSign(s);
-	}
+		if(frame.Id != prevFrame.Id) {
+			Sign s = Sequences.Utils.FrameToSign(frame, prevFrame);
+			buffer.AddSign(s);
+		}
+		prevFrame = frame;
+	}*/
 
 	void FixedUpdate() {
+
+		if(state == GameState.Pause && !guiScript.CheckPause()) {
+			Resume ();
+		}
 
 		vertInput = 0;
 		horzInput = 0;
 		
-		SaveFrame();
+		//SaveFrame();
 
-		CheckFrame();
+		CheckActions();
 
 		float keyH = Input.GetAxis("Horizontal");
 		float keyV = Input.GetAxis("Vertical");
@@ -143,8 +101,8 @@ public class CharacterControllerScript : MonoBehaviour {
 		MoveAndRotate();
 	}
 
-	void CheckFrame() {
-		double[][] sequence = sample.getSequence().GetArray();
+	void CheckActions() {
+		//double[][] sequence = buffer.getSequence().GetArray();
 
 		/*List<string> actions = gameState.GetActions();
 		for(int i = 0; i < actions.Count; i++) {
@@ -153,29 +111,95 @@ public class CharacterControllerScript : MonoBehaviour {
 
 		//classifier.testModel(0,sequence);
 
-		action = classifier.ComputeToString(sequence);
+		List<string> allActions = controller.GetGestures(classifier);
+		List<string> actions = Game.UpdateActions(allActions);
 
-		Debug.Log(action);
-		
-		/*switch(action) {
-		case "NOTHING":
+		switch(state) {
+		case GameState.Game:
+			CheckMove(allActions);
+			CheckPauseDrinkGrab(actions);
 			break;
-		case "FRONT":
-			vertInput = 1;
+		case GameState.Pause:
+			CheckPauseActions(actions);
 			break;
-		case "BACK":
-			vertInput = -1;
+		case GameState.EndGame:
+			CheckEndGameActions(actions);
 			break;
-		case "RIGHT":
-			horzInput = 1;
+		default:
 			break;
-		case "LEFT":
-			horzInput = -1;
-			break;
-		case "PAUSE":
-			Pause();
-			break;
-		}*/
+		}
+	}
+
+	void CheckMove(List<string> actions) {
+		for (int i = 0; i< actions.Count; i++) {
+			switch(actions[i]) {
+			case "FRONT":
+				vertInput = 1;
+				break;
+			case "BACK":
+				vertInput = -1;
+				break;
+			case "RIGHT":
+				horzInput = 1;
+				break;
+			case "LEFT":
+				horzInput = -1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	void CheckPauseDrinkGrab(List<string> actions) {
+		for (int i = 0; i< actions.Count; i++) {
+			switch(actions[i]) {
+			case "PAUSE":
+				Pause();
+				break;
+			case "DRINK":
+				Drink();
+				break;
+			case "GRAB":
+				Grab();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	void CheckPauseActions(List<string> actions) {
+		for (int i = 0; i< actions.Count; i++) {
+			switch(actions[i]) {
+			case "RESUME":
+				Resume ();
+				break;
+			case "MUTE":
+				Mute();
+				break;
+			case "UNMUTE":
+				Unmute();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	void CheckEndGameActions(List<string> actions) {
+		for (int i = 0; i< actions.Count; i++) {
+			switch(actions[i]) {
+			case "RESUME":
+				guiScript.BackToMainMenu();
+				break;
+			case "QUIT":
+				guiScript.Quit();
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void OnTriggerEnter (Collider other) {
@@ -213,7 +237,7 @@ public class CharacterControllerScript : MonoBehaviour {
 	}
 
 	void Move (float value) {
-		if(isPaused) {return;}
+		if(state != GameState.Game) {return;}
 
 		Vector3 target = transform.position + transform.forward*value;
 		target.y = transform.position.y;
@@ -221,20 +245,24 @@ public class CharacterControllerScript : MonoBehaviour {
 	}
 
 	void Rotate (float value) {
-		if(isPaused) {return;}
-		transform.RotateAround(transform.position, Vector3.up, value*3);
+		if(state != GameState.Game) {return;}
+		transform.RotateAround(transform.position, Vector3.up, value);
 	}
 
 	void Grab() {
-		Application.LoadLevel(0);
+		if(!onExit) {return;}
+		state = GameState.EndGame;
+		UpdateState(Game.EndGameState());
+		guiScript.EndGame();
 	}
 
 	void Drink() {
+		if(!onPotion) {return;}
 		switch(potionColor) {
 		case LevelManager.GameColors.Red:
-			gameObject.layer = LayerMask.NameToLayer("Red");
-			guiScript.ChangeText("RED");
-			guiScript.ChangeColor(Color.red);
+				gameObject.layer = LayerMask.NameToLayer("Red");
+				guiScript.ChangeText("RED");
+				guiScript.ChangeColor(Color.red);
 			break;
 		case LevelManager.GameColors.Green:
 			gameObject.layer = LayerMask.NameToLayer("Green");
@@ -254,9 +282,26 @@ public class CharacterControllerScript : MonoBehaviour {
 		}
 	}
 
-	void Pause() {
-		isPaused = true;
+	public void Pause() {
+		state = GameState.Pause;
+		UpdateState(Game.PauseState());
 		guiScript.Pause();
+	}
+
+	public void Resume() {
+		state = GameState.Game;
+		UpdateState(Game.GameState());
+		guiScript.Resume ();
+	}
+
+	public void Mute() {
+		audio.mute = true;
+		Debug.Log ("MUTE");
+	}
+
+	public void Unmute() {
+		audio.mute = false;
+		Debug.Log ("UNMUTE");
 	}
 
 	public void FillColor(LevelManager.GameColors color) {

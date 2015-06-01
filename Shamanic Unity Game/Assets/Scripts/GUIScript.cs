@@ -5,6 +5,7 @@ using System.Collections;
 public class GUIScript : MonoBehaviour {
 
 	public GameObject pausePanel;
+	public GameObject endGamePanel;
 	public Text guiText;
 	public Image guiPanel;
 
@@ -13,7 +14,6 @@ public class GUIScript : MonoBehaviour {
 	}
 
 	public void Resume() {
-		CharacterControllerScript.isPaused = false;
 		pausePanel.SetActive(false);
 	}
 
@@ -38,6 +38,22 @@ public class GUIScript : MonoBehaviour {
 
 	public string GetText() {
 		return guiText.text;
+	}
+
+	public bool CheckPause() {
+		return pausePanel.activeSelf;
+	}
+
+	public void EndGame() {
+		endGamePanel.SetActive(true);
+	}
+
+	public void Quit() {
+		Application.Quit();
+	}
+
+	public void BackToMainMenu() {
+		Application.LoadLevel(0);
 	}
 
 }

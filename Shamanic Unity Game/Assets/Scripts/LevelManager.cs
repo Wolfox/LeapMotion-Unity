@@ -44,13 +44,23 @@ public class LevelManager : MonoBehaviour {
 		new LvlVal[] {LvlVal.Empty,LvlVal.Empty,LvlVal.Empty,LvlVal.Start,LvlVal.Empty,LvlVal.Empty,LvlVal.Empty}
 	};
 
+	private LvlVal[][] AnotherLever = new LvlVal[][]{
+		new LvlVal[] {LvlVal.RPotion,LvlVal.NBlock,LvlVal.NBlock,LvlVal.Empty,LvlVal.Empty,LvlVal.Empty},
+		new LvlVal[] {LvlVal.NBlock,LvlVal.Empty,LvlVal.NBlock,LvlVal.Empty,LvlVal.Empty,LvlVal.Empty},
+		new LvlVal[] {LvlVal.NBlock,LvlVal.NBlock,LvlVal.NBlock,LvlVal.RBlock,LvlVal.NBlock,LvlVal.BPotion},
+		new LvlVal[] {LvlVal.Empty,LvlVal.Empty,LvlVal.GBlock,LvlVal.Empty,LvlVal.BBlock,LvlVal.Empty},
+		new LvlVal[] {LvlVal.Empty,LvlVal.Empty,LvlVal.GBlock,LvlVal.Empty,LvlVal.BBlock,LvlVal.Empty},
+		new LvlVal[] {LvlVal.Empty,LvlVal.GPotion,LvlVal.NBlock,LvlVal.BBlock,LvlVal.NBlock,LvlVal.Finish},
+		new LvlVal[] {LvlVal.Empty,LvlVal.Empty,LvlVal.Start,LvlVal.Empty,LvlVal.Empty,LvlVal.Empty}
+	};
+
 	private LvlVal[][] level;
 	private GameObject[][] objLevel;
 	private Vector3 correctBlockPosition;
 
 	// Use this for initialization
 	void Start() {
-		level = Testlevel;
+		level = AnotherLever;
 
 		correctBlockPosition = new Vector3(-1.0f,0.0f,1.0f);
 		correctBlockPosition += new Vector3(level.Max(element => element.Length), 0.0f, -level.Length);

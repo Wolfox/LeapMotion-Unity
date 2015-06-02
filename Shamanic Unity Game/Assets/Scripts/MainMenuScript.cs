@@ -23,7 +23,8 @@ public class MainMenuScript : MonoBehaviour {
 
 	public void Awake() {
 		Game.StartCulture();
-		classifier = Game.GetClassifier(Game.StartGameState());
+		classifier = Game.GetClassifier(Game.NothingState());
+		//classifier = Game.GetClassifier(Game.StartGameState());
 	}
 
 	public void Start() {
@@ -46,9 +47,9 @@ public class MainMenuScript : MonoBehaviour {
 	}
 
 	public void Update() {
-		if(state == MainMenuState.Start && Game.culture != "") {
-			YesNoGestures();
-		}
+		//if(state == MainMenuState.Start && Game.culture != "") {
+			ReadGestures();
+		//}
 		TapGestures();
 	}
 
@@ -83,14 +84,14 @@ public class MainMenuScript : MonoBehaviour {
 		}
 	}
 
-	private void YesNoGestures() {
+	private void ReadGestures() {
 		string action = "";
 		List<string> allActions = controller.GetGestures(classifier);
 		List<string> actions = Game.UpdateActions(allActions);
 
-		foreach(string atc in allActions) {
+		/*foreach(string atc in allActions) {
 			Debug.Log (atc);
-		}
+		}*/
 
 		if(actions.Count == 1) {
 			action = actions[0];
@@ -143,6 +144,7 @@ public class MainMenuScript : MonoBehaviour {
 	private void StartGame () {
 		state = MainMenuState.Start;
 		startGameScene.SetActive(true);
+		classifier = Game.GetClassifier(Game.StartGameState());
 		startGameScene.GetComponent<StartGamePanelScript>().UpdateYesNoInterface();
 		UpdateStartGameScene();
 		UpdateButtons();
@@ -151,6 +153,7 @@ public class MainMenuScript : MonoBehaviour {
 	public void BackToMainMenu() {
 		state = MainMenuState.Main;
 		startGameScene.SetActive(false);
+		classifier = Game.GetClassifier(Game.NothingState());
 		UpdateButtons();
 	}
 

@@ -177,6 +177,12 @@ public static class Game {
 		return state;
 	}
 
+	public static State NothingState() {
+		State state = new State("Nothing State");
+		state.AddAction("NOTHING");
+		return state;
+	}
+
 	public static List<string> UpdateActions(List<string> actions) {
 		List<string> actionsToCheck = new List<string> (actionsBuffer.Keys);
 		List<string> returnActions = new List<string>();

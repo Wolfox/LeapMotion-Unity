@@ -46,14 +46,24 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\HandControllerEditor.cs" />
+     <Compile Include="Assets\Editor\LeapMotion\HandControllerEditor.cs" />
+     <Compile Include="Assets\Editor\OVR\OVRBuild.cs" />
+     <Compile Include="Assets\Editor\OVR\OVRGameView.cs" />
+     <Compile Include="Assets\Editor\OVR\OVRPrefabs.cs" />
+     <Compile Include="Assets\Editor\OVR\OVRShimLoader.cs" />
+     <Compile Include="Assets\Moonlight\Editor\OVRMoonlightLoader.cs" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\Plugins\x86_64\donotdelete.txt" />
-     <None Include="Assets\Shaders\RimShading.shader" />
+     <None Include="Assets\Shaders\OVR\TextShader3D.shader" />
+     <None Include="Assets\Shaders\LeapMotion\RimShading.shader" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-BasicOutline.shader" />
+     <None Include="Assets\Moonlight\Shaders\Unlit Crosshair.shader" />
+     <None Include="Assets\Shaders\OVR\Unlit Transparent HUD.shader" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-LightedOutline.shader" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-Lighted.shader" />
+     <None Include="Assets\Moonlight\Materials\GlobalMenu\OVRCutoutRamp.shader" />
      <None Include="Assets\CoreAssetVersion.txt" />
+     <None Include="Assets\Shaders\OVR\OVRGUIShader.shader" />
      <None Include="Assets\Plugins\x86\donotdelete.txt" />
      <None Include="Assets\Plugins\SystemWipeRecognizerDll.bundle\Contents\MacOS\version.txt" />
  <Reference Include="UnityEngine.UI">

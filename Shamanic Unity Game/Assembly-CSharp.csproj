@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\CreateModelsScript.cs" />
      <Compile Include="Assets\Scripts\CubesLevelTestScript.cs" />
      <Compile Include="Assets\Scripts\EndCube.cs" />
+     <Compile Include="Assets\Scripts\EndPanelScript.cs" />
      <Compile Include="Assets\Scripts\GUIScript.cs" />
      <Compile Include="Assets\Scripts\GameScript.cs" />
      <Compile Include="Assets\Scripts\LeapMotion\HandController.cs" />
@@ -85,8 +86,8 @@
      <Compile Include="Assets\Scripts\MainMenuScript.cs" />
      <Compile Include="Assets\Scripts\NumberPanelScript.cs" />
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
+     <Compile Include="Assets\Scripts\PausePanelScript.cs" />
      <Compile Include="Assets\Scripts\Potion.cs" />
-     <Compile Include="Assets\Scripts\ReadTest.cs" />
      <Compile Include="Assets\Scripts\StartGamePanelScript.cs" />
      <None Include="Assets\Materials\LeapMotion\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\Plugins\x86_64\donotdelete.txt" />

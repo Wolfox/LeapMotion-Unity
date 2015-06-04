@@ -362,21 +362,51 @@ public class HandController : MonoBehaviour {
 		return actions;
 	}
 
-	public void EnableTapGestures() {
+	/*public void EnableTapGestures() {
 		leap_controller_.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
 		leap_controller_.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
-		
+
 		leap_controller_.Config.SetFloat("Gesture.ScreenTap.MinForwardVelocity", 30.0f);
 		leap_controller_.Config.SetFloat("Gesture.ScreenTap.HistorySeconds", .5f);
 		leap_controller_.Config.SetFloat("Gesture.ScreenTap.MinDistance", 1.0f);
-		
+
 		leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
 		leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
 		leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1.0f);
 		leap_controller_.Config.Save();
+	}*/
+
+	public void EnableCustomGestures(Gesture.GestureType gestureType, bool enable) {
+		if(!enable) {
+			leap_controller_.EnableGesture(Gesture.GestureType.TYPESCREENTAP, enable);
+			return;
+		}
+
+		switch(gestureType) {
+		case Gesture.GestureType.TYPESCREENTAP:
+			leap_controller_.EnableGesture(Gesture.GestureType.TYPESCREENTAP);
+			leap_controller_.Config.SetFloat("Gesture.ScreenTap.MinForwardVelocity", 30.0f);
+			leap_controller_.Config.SetFloat("Gesture.ScreenTap.HistorySeconds", .5f);
+			leap_controller_.Config.SetFloat("Gesture.ScreenTap.MinDistance", 1.0f);
+			break;
+		case Gesture.GestureType.TYPEKEYTAP:
+			leap_controller_.EnableGesture(Gesture.GestureType.TYPEKEYTAP);
+			leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
+			leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
+			leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1.0f);
+			break;
+		case Gesture.GestureType.TYPESWIPE:
+			leap_controller_.EnableGesture(Gesture.GestureType.TYPESWIPE);
+			leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", 200.0f);
+			leap_controller_.Config.SetFloat("Gesture.Swipe.MinVelocity", 1000f);
+			break;
+		default:
+			break;
+		}
+		leap_controller_.Config.Save();
 	}
 
-	public GestureList GetTapGestures() {
+	public GestureList GetCustomGestures() {
 		return GetFrame().Gestures();
 	}
 

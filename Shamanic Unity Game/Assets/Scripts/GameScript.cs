@@ -5,11 +5,16 @@ using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
 using Sequences;
 using System.IO;
+using Leap;
+using UnityEngine.UI;
+using System;
 
 public static class Game {
 
 	private static Dictionary<string,float> actionsBuffer = new Dictionary<string, float>();
-	private static float minActionTime = 1.5f;
+	private static float bufferStartTime = 0;
+	private static float minActionTime = 0.9f;
+	private static float timeToStartRead = 3; 
 
 	public static string culture = "";
 	public static int bufferSize = 50;
@@ -183,9 +188,18 @@ public static class Game {
 		return state;
 	}
 
-	public static List<string> UpdateActions(List<string> actions) {
+	public static void StartActionBuffer() {
+		bufferStartTime = Time.time;
+		actionsBuffer.Clear();
+	}
+
+	public static List<string> UpdateActionBuffer(List<string> actions) {
 		List<string> actionsToCheck = new List<string> (actionsBuffer.Keys);
 		List<string> returnActions = new List<string>();
+
+		if((bufferStartTime + timeToStartRead) > Time.time) {
+			return returnActions;
+		}
 
 		foreach(string action in actions) {
 			actionsToCheck.Remove(action);
@@ -204,4 +218,56 @@ public static class Game {
 
 		return returnActions;
 	}
+
+	public static string GetStringAction(string action) {
+		switch(action) {
+		case "NOTHING":
+			return "";
+		default:
+			return action;
+		}
+	}
+
+	/*private static void TapButtons(GestureList gestures, Button[] buttons, Camera camera) {
+		
+		for(int i = 0; i < gestures.Count; i++) {
+			Gesture gesture = gestures[i];
+			Vector3 vect = new Vector3();
+			if(gesture.Type == ScreenTapGesture.ClassType()) {
+				//Debug.Log ("tap");
+				ScreenTapGesture screentapGesture = new ScreenTapGesture(gesture);
+				vect = screentapGesture.Position.ToUnityScaled();
+			}
+			if(gesture.Type == KeyTapGesture.ClassType()) {
+				//Debug.Log ("key");
+				KeyTapGesture screentapGesture = new KeyTapGesture(gesture);
+				vect = screentapGesture.Position.ToUnityScaled();
+			}
+			
+			vect *= 20;
+			vect -= new Vector3(0,5,3);
+			
+			foreach(Button button in buttons) {
+				Vector3[] corners = new Vector3 [4];
+				RectTransform rectTrans = button.gameObject.GetComponent<RectTransform>();
+				rectTrans.GetWorldCorners(corners);
+				if(ContainInWorld(corners, vect)) {
+					button.onClick.Invoke();
+				}
+			}
+		}
+	}
+
+	private static bool ContainInWorld(Vector3[] corners, Vector3 point) {
+		Vector3[] cornersInCamera = Array.ConvertAll(corners, element => Camera.main.WorldToViewportPoint(element));
+		Vector3 pointInCamera = Camera.main.WorldToViewportPoint(point); 
+		
+		//testCube.position = point;
+		return Contain(cornersInCamera[0], cornersInCamera[2], pointInCamera);
+	}
+	
+	private static bool Contain(Vector2 downLeft, Vector2 topRight, Vector2 pos){
+		return (pos.x >= downLeft.x && pos.x <= topRight.x &&
+		        pos.y >= downLeft.y && pos.y <= topRight.y);
+	}*/
 }

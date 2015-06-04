@@ -15,7 +15,7 @@ public class MainMenuScript : MonoBehaviour {
 	public GameObject startGameScene;
 	public Text numOfColors;
 	public Text culture;
-	public Transform testCube;
+	public Transform pointer;
 
 	public HandController controller;
 	private Button[] buttons = {};
@@ -24,12 +24,12 @@ public class MainMenuScript : MonoBehaviour {
 	public void Awake() {
 		Game.StartCulture();
 		classifier = Game.GetClassifier(Game.NothingState());
-		//classifier = Game.GetClassifier(Game.StartGameState());
 	}
 
 	public void Start() {
 		state = MainMenuState.Main;
-		controller.EnableTapGestures();		
+		controller.EnableCustomGestures(Gesture.GestureType.TYPESCREENTAP, true);
+		controller.EnableCustomGestures(Gesture.GestureType.TYPEKEYTAP, true);
 		UpdateButtons();
 	}
 
@@ -47,31 +47,27 @@ public class MainMenuScript : MonoBehaviour {
 	}
 
 	public void Update() {
-		//if(state == MainMenuState.Start && Game.culture != "") {
-			ReadGestures();
-		//}
+		ReadGestures();
 		TapGestures();
 	}
 
 	private void TapGestures() {
-		GestureList gestures = controller.GetTapGestures();
+		GestureList gestures = controller.GetCustomGestures();
 
 		for(int i = 0; i < gestures.Count; i++) {
 			Gesture gesture = gestures[i];
 			Vector3 vect = new Vector3();
 			if(gesture.Type == ScreenTapGesture.ClassType()) {
 				//Debug.Log ("tap");
-				ScreenTapGesture screentapGesture = new ScreenTapGesture(gesture);
-				vect = screentapGesture.Position.ToUnityScaled();
+				ScreenTapGesture screenTapGesture = new ScreenTapGesture(gesture);
+				vect = screenTapGesture.Position.ToUnityScaled();
 			}
 			if(gesture.Type == KeyTapGesture.ClassType()) {
 				//Debug.Log ("key");
-				KeyTapGesture screentapGesture = new KeyTapGesture(gesture);
-				vect = screentapGesture.Position.ToUnityScaled();
+				KeyTapGesture screenTapGesture = new KeyTapGesture(gesture);
+				vect = screenTapGesture.Position.ToUnityScaled();
 			}
-
-			vect *= 20;
-			vect -= new Vector3(0,5,3);
+			vect = controller.transform.TransformPoint(vect);
 
 			foreach(Button button in buttons) {
 				Vector3[] corners = new Vector3 [4];
@@ -87,11 +83,7 @@ public class MainMenuScript : MonoBehaviour {
 	private void ReadGestures() {
 		string action = "";
 		List<string> allActions = controller.GetGestures(classifier);
-		List<string> actions = Game.UpdateActions(allActions);
-
-		/*foreach(string atc in allActions) {
-			Debug.Log (atc);
-		}*/
+		List<string> actions = Game.UpdateActionBuffer(allActions);
 
 		if(actions.Count == 1) {
 			action = actions[0];
@@ -114,7 +106,7 @@ public class MainMenuScript : MonoBehaviour {
 		Vector3[] cornersInCamera = Array.ConvertAll(corners, element => Camera.main.WorldToViewportPoint(element));
 		Vector3 pointInCamera = Camera.main.WorldToViewportPoint(point); 
 
-				testCube.position = point;
+		pointer.position = point;
 		return Contain(cornersInCamera[0], cornersInCamera[2], pointInCamera);
 	}
 
@@ -145,6 +137,7 @@ public class MainMenuScript : MonoBehaviour {
 		state = MainMenuState.Start;
 		startGameScene.SetActive(true);
 		classifier = Game.GetClassifier(Game.StartGameState());
+		Game.StartActionBuffer();
 		startGameScene.GetComponent<StartGamePanelScript>().UpdateYesNoInterface();
 		UpdateStartGameScene();
 		UpdateButtons();

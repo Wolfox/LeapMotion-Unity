@@ -11,7 +11,8 @@ public class LevelManager : MonoBehaviour {
 		NBlock, Empty,
 		RBlock, RPotion,
 		BBlock, BPotion,
-		GBlock, GPotion
+		GBlock, GPotion,
+		Nothing
 	};
 
 	public enum GameColors {
@@ -99,6 +100,16 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	bool IsInside(Vector3 position, Vector3 blockPos) {
+		if(position.x > (blockPos.x + 2.5f) || position.x < (blockPos.x - 2.5f)) {
+			return false;
+		}
+		if(position.z > (blockPos.z + 2.5f) || position.z < (blockPos.z - 2.5f)) {
+			return false;
+		}
+		return true;
 	}
 
 	void RemoveWalls() {
@@ -221,7 +232,21 @@ public class LevelManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
+	}
+
+	public LvlVal CheckPosition(Vector3 playerPos) {
+		for(int i = 0; i < objLevel.Length; i++) {
+			for(int j = 0; j < objLevel[i].Length; j++) {
+				if(objLevel[i][j]) {
+					Vector3 blockPos = objLevel[i][j].transform.position;
+					if(IsInside (playerPos, blockPos)) {
+						return level[i][j];
+					}
+				}
+			}
+		}
+		return LvlVal.Nothing;
 	}
 
 	bool DoesExist(int i, int j) {

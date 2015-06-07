@@ -11,18 +11,8 @@ public class CreateModelsScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		CreateModelFromFrames("Frames/POINT_FRONT.frs", "GestureModels/POINT_FRONT.bin");
-		CreateModelFromFrames("Frames/POINT_RIGHT.frs", "GestureModels/POINT_RIGHT.bin");
-		CreateModelFromFrames("Frames/POINT_LEFT.frs", "GestureModels/POINT_LEFT.bin");
-		//CreateModelFromFrames("Frames/GRAB.frs", "GestureModels/GRAB.bin");
-		//CreateModelFromFrames("Frames/HAND_ROTATING.frs", "GestureModels/HAND_ROTATING.bin");
 		//CreateModels();
-		//CreateModelFromFrames("Frames/OPEN_HAND.frs", "GestureModels/OPEN_HAND.bin");
-		//CreateModelFromFrames("Frames/CLOSE_HAND.frs", "GestureModels/CLOSE_HAND.bin");
-		
-		//CreatePauseModels();
-		//CreateSoundModels();
-		//CreateNumberModels();
+		CreateModelFromFrames("Frames/OPEN_FRONT.frs", "GestureModels/OPEN_FRONT.bin");
 	}
 
 	public void CreateModels() {

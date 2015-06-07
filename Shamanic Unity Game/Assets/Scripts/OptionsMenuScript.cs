@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Leap;
 using System;
 using System.Linq;
-using Sequences;
+using Shamanic_Interface;
 
 public class OptionsMenuScript : MonoBehaviour {
 

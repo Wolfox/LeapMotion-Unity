@@ -7,10 +7,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Leap;
+using Shamanic_Interface;
 
 // Overall Controller object that will instantiate hands and tools when they appear.
-using Sequences;
-
 
 public class HandController : MonoBehaviour {
 

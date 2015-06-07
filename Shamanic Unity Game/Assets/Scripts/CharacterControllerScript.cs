@@ -4,7 +4,7 @@ using System.Collections;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
 using System.Collections.Generic;
-using Sequences;
+using Shamanic_Interface;
 using Leap;
 using System;
 

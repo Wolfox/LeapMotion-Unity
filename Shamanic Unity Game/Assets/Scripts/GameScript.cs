@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
-using Sequences;
+using Shamanic_Interface;
 using System.IO;
 using Leap;
 using UnityEngine.UI;
@@ -28,7 +28,8 @@ public static class Game {
 	public static CulturalLayer culturalLayer = new CulturalLayer();
 
 	public static List<HiddenMarkovModel<MultivariateNormalDistribution>> GetModels(State state) {
-		return state.GetModelsWithCulture(allModels, culturalLayer, culture);
+		return Shamanic_Interface.Utils.GetModelsWithCulture(allModels, state.GetActions(),
+		                                                     culturalLayer, culture);
 	}
 
 	public static void InitAllModels() {

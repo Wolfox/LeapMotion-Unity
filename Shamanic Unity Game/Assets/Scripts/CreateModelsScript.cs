@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Sequences;
+using Shamanic_Interface;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
 using Accord.Statistics.Models.Markov.Learning;

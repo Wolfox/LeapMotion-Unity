@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using Leap;
-using Sequences;
+using Shamanic_Interface;
 using System.Collections.Generic;
 
 public class MainMenuScript : MonoBehaviour {

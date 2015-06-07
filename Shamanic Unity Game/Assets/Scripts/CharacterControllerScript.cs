@@ -303,12 +303,12 @@ public class CharacterControllerScript : MonoBehaviour {
 			}
 			break;
 		case LevelManager.LvlVal.GPotion:
-			if(Game.numberOfColors >= 3) {
+			if(Game.numberOfColors >= 2) {
 				Drink(LevelManager.GameColors.Green);
 			}
 			break;
 				case LevelManager.LvlVal.BPotion:
-				if(Game.numberOfColors >= 3) {
+				if(Game.numberOfColors >= 1) {
 					Drink(LevelManager.GameColors.Blue);
 				}
 			break;

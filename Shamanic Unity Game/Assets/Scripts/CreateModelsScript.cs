@@ -11,8 +11,8 @@ public class CreateModelsScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//CreateModels();
-		CreateModelFromFrames("Frames/OPEN_FRONT.frs", "GestureModels/OPEN_FRONT.bin");
+		CreateModels();
+		//CreateModelFromFrames("Frames/OPEN_FRONT.frs", "GestureModels/OPEN_FRONT.bin");
 	}
 
 	public void CreateModels() {

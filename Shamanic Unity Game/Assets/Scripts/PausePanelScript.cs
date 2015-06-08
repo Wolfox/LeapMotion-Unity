@@ -28,7 +28,7 @@ public class PausePanelScript : MonoBehaviour {
 	}
 
 	public void ActiveSoundButtons() {
-		MuteButton.SetActive(!muted);
-		UnmuteButton.SetActive(muted);
+		MuteButton.SetActive(!muted && Game.culture == "");
+		UnmuteButton.SetActive(muted && Game.culture == "");
 	}
 }

@@ -84,20 +84,20 @@ public static class Game {
 	}
 
 	public static void InitCulturalLayer() {
-		culturalLayer.AddCustomGesture("NOTHING", "OPEN_HAND");
-		culturalLayer.AddCustomGesture("SELECT", "POINTING");
-		culturalLayer.AddCustomGesture("CLICK", "INDEX_CLICK");
-		culturalLayer.AddCustomGesture("NUMBER_1","INDEX");
-		culturalLayer.AddCustomGesture("NUMBER_2","INDEX_MIDDLE");
-		culturalLayer.AddCustomGesture("NUMBER_3","INDEX_MIDDLE_RINGER");
-		culturalLayer.AddCustomGesture("YES","THUMBS_UP");
-		culturalLayer.AddCustomGesture("MUTE", "INDEX_HUSH");
-		culturalLayer.AddCustomGesture("UNMUTE", "MOUTH_MIMIC");
-		culturalLayer.AddCustomGesture("PAUSE", "HAND_HALT");
-		culturalLayer.AddCustomGesture("QUIT", "WAVE");
-		culturalLayer.AddCustomGesture("GRAB", "GRAB");
-		culturalLayer.AddCustomGesture("MUTE", "INDEX_HUSH");
-		//culturalLayer.AddCustomGesture("", "");
+		culturalLayer.AddDefaultGesture("NOTHING", "OPEN_HAND");
+		culturalLayer.AddDefaultGesture("SELECT", "POINTING");
+		culturalLayer.AddDefaultGesture("CLICK", "INDEX_CLICK");
+		culturalLayer.AddDefaultGesture("NUMBER_1","INDEX");
+		culturalLayer.AddDefaultGesture("NUMBER_2","INDEX_MIDDLE");
+		culturalLayer.AddDefaultGesture("NUMBER_3","INDEX_MIDDLE_RINGER");
+		culturalLayer.AddDefaultGesture("YES","THUMBS_UP");
+		culturalLayer.AddDefaultGesture("MUTE", "INDEX_HUSH");
+		culturalLayer.AddDefaultGesture("UNMUTE", "MOUTH_MIMIC");
+		culturalLayer.AddDefaultGesture("PAUSE", "HAND_HALT");
+		culturalLayer.AddDefaultGesture("QUIT", "WAVE");
+		culturalLayer.AddDefaultGesture("GRAB", "GRAB");
+		culturalLayer.AddDefaultGesture("MUTE", "INDEX_HUSH");
+		//culturalLayer.AddDefaultGesture("", "");
 
 		//culturalLayer.AddCultureGesture("NUMBER_0","PT","FIST");
 		culturalLayer.AddCultureGesture("NO", "PT", "THUMBS_DOWN");

@@ -4,7 +4,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class GUIScript : MonoBehaviour {
+public class HUDScript : MonoBehaviour {
 
 	public GameObject pausePanel;
 	public GameObject endGamePanel;

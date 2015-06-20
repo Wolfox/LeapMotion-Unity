@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Leap;
-using Shamanic_Interface;
+using ShamanicInterface.DataStructure;
+using ShamanicInterface.Classifier;
+using ShamanicInterface.Utils;
 
 public class HandGesture : MonoBehaviour {
 
 	private SequenceBuffer buffer = new SequenceBuffer(Game.bufferSize);
 
 	public void AddSign(Hand hand, Frame previousFrame) {
-		buffer.AddSign(Shamanic_Interface.Utils.HandToSign(hand, previousFrame));
+		buffer.AddSign(ShamanicInterface.Utils.Utils.HandToSign(hand, previousFrame));
 	}
 
-	public string GetAction(Classifier classifier) {
+	public string GetAction(HMMClassifier classifier) {
 		return classifier.ComputeToString(buffer.getSequence().GetArray());
 	}
 }

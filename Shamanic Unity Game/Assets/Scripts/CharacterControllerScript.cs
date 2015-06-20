@@ -4,9 +4,10 @@ using System.Collections;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
 using System.Collections.Generic;
-using Shamanic_Interface;
 using Leap;
 using System;
+using ShamanicInterface.Classifier;
+using ShamanicInterface.State;
 
 public class CharacterControllerScript : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class CharacterControllerScript : MonoBehaviour {
 	private GameState state;
 
 	public GameObject PlayerMesh;
-	public GUIScript guiScript;
+	public HUDScript hudScript;
 	public LevelManager levelScript;
 	public HandController controller;
 	public AudioSource audio;
@@ -29,7 +30,7 @@ public class CharacterControllerScript : MonoBehaviour {
 	private float lastTimeMove = 0;
 
 
-	private Classifier classifier;
+	private HMMClassifier classifier;
 
 	void Awake() {
 		Game.StartCulture();
@@ -46,16 +47,16 @@ public class CharacterControllerScript : MonoBehaviour {
 		UpdateButtons();
 	}
 
-	void UpdateState(State state) {
+	void UpdateState(Actions state) {
 		classifier = Game.GetClassifier(state);
 	}
 
 	public void UpdateButtons() {
-		guiScript.UpdateButtons();
+		hudScript.UpdateButtons();
 	}
 
 	void FixedUpdate() {
-		if(state == GameState.Pause && !guiScript.CheckPause()) {
+		if(state == GameState.Pause && !hudScript.CheckPause()) {
 			Resume ();
 		}
 		
@@ -85,7 +86,7 @@ public class CharacterControllerScript : MonoBehaviour {
 			case Gesture.GestureType.TYPEKEYTAP:
 				KeyTapGesture keyTapGesture = new KeyTapGesture(gesture);
 				Vector3 vector = keyTapGesture.Position.ToUnityScaled();
-				guiScript.PressButton (controller.transform.TransformPoint(vector));
+				hudScript.PressButton (controller.transform.TransformPoint(vector));
 				break;
 			case Gesture.GestureType.TYPESWIPE:
 				SwipeGesture swipeGesture = new SwipeGesture(gesture);
@@ -149,14 +150,14 @@ public class CharacterControllerScript : MonoBehaviour {
 			else { Mute(); }
 		}
 		if(Input.GetButtonDown("Quit")) {
-			guiScript.Quit();
+			hudScript.Quit();
 		}
 	}
 
 	void CheckGestureActions() {
 		List<string> allActions = controller.GetGestures(classifier);
 		List<string> actions = Game.UpdateActionBuffer(allActions);
-		guiScript.AddActionsToGUI(allActions);
+		hudScript.AddActionsToGUI(allActions);
 
 		switch(state) {
 		case GameState.Game:
@@ -235,10 +236,10 @@ public class CharacterControllerScript : MonoBehaviour {
 		for (int i = 0; i< actions.Count; i++) {
 			switch(actions[i]) {
 			case "RESUME":
-				guiScript.BackToMainMenu();
+				hudScript.BackToMainMenu();
 				break;
 			case "QUIT":
-				guiScript.Quit();
+				hudScript.Quit();
 				break;
 			default:
 				break;
@@ -360,7 +361,7 @@ public class CharacterControllerScript : MonoBehaviour {
 		state = GameState.EndGame;
 		UpdateState(Game.EndGameState());
 		Game.StartActionBuffer();
-		guiScript.EndGame();
+		hudScript.EndGame();
 	}
 
 	void Drink() {
@@ -372,19 +373,19 @@ public class CharacterControllerScript : MonoBehaviour {
 		switch(color) {
 		case LevelManager.GameColors.Red:
 			gameObject.layer = LayerMask.NameToLayer("Red");
-			guiScript.ChangePlayerColor("RED");
+			hudScript.ChangePlayerColor("RED");
 			break;
 		case LevelManager.GameColors.Green:
 			gameObject.layer = LayerMask.NameToLayer("Green");
-			guiScript.ChangePlayerColor("GREEN");
+			hudScript.ChangePlayerColor("GREEN");
 			break;
 		case LevelManager.GameColors.Blue:
 			gameObject.layer = LayerMask.NameToLayer("Blue");
-			guiScript.ChangePlayerColor("BLUE");
+			hudScript.ChangePlayerColor("BLUE");
 			break;
 		case LevelManager.GameColors.Neutral:
 			gameObject.layer = 0;
-			guiScript.ChangePlayerColor("");
+			hudScript.ChangePlayerColor("");
 			break;
 		}
 	}
@@ -393,22 +394,22 @@ public class CharacterControllerScript : MonoBehaviour {
 		state = GameState.Pause;
 		UpdateState(Game.PauseState());
 		Game.StartActionBuffer();
-		guiScript.Pause();
+		hudScript.Pause();
 	}
 
 	public void Resume() {
 		state = GameState.Game;
 		UpdateState(Game.GameState());
-		guiScript.Resume ();
+		hudScript.Resume ();
 	}
 
 	public void Mute() {
 		audio.mute = true;
-		guiScript.Mute();
+		hudScript.Mute();
 	}
 
 	public void Unmute() {
 		audio.mute = false;
-		guiScript.Unmute();
+		hudScript.Unmute();
 	}
 }

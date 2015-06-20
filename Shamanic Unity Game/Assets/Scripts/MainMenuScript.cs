@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using Leap;
-using Shamanic_Interface;
 using System.Collections.Generic;
+using ShamanicInterface.Classifier;
 
 public class MainMenuScript : MonoBehaviour {
 
@@ -19,7 +19,7 @@ public class MainMenuScript : MonoBehaviour {
 
 	public HandController controller;
 	private Button[] buttons = {};
-	private Classifier classifier;
+	private HMMClassifier classifier;
 
 	public void Awake() {
 		Game.StartCulture();

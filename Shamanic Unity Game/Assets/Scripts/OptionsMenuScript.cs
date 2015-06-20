@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Leap;
 using System;
 using System.Linq;
-using Shamanic_Interface;
+using ShamanicInterface.Classifier;
 
 public class OptionsMenuScript : MonoBehaviour {
 
@@ -18,7 +18,7 @@ public class OptionsMenuScript : MonoBehaviour {
 
 	public HandController controller;
 	private Button[] buttons = {};
-	private Classifier classifier;
+	private HMMClassifier classifier;
 
 	public void Awake() {
 		Game.StartCulture();

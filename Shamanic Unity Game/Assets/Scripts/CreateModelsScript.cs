@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Shamanic_Interface;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
 using Accord.Statistics.Models.Markov.Learning;
 using Accord.Statistics.Models.Markov.Topology;
 using Accord.Statistics.Distributions.Fitting;
+using ShamanicInterface.DataStructure;
+using ShamanicInterface.Utils;
 
 public class CreateModelsScript : MonoBehaviour {
 

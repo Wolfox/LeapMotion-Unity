@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Accord.Statistics.Models.Markov;
 using Accord.Statistics.Distributions.Multivariate;
-using Shamanic_Interface;
 using System.IO;
 using Leap;
 using UnityEngine.UI;
 using System;
+using ShamanicInterface.Culture;
+using ShamanicInterface.Utils;
+using ShamanicInterface.State;
+using ShamanicInterface.Classifier;
 
 public static class Game {
 
@@ -27,8 +30,8 @@ public static class Game {
 
 	public static CulturalLayer culturalLayer = new CulturalLayer();
 
-	public static List<HiddenMarkovModel<MultivariateNormalDistribution>> GetModels(State state) {
-		return Shamanic_Interface.Utils.GetModelsWithCulture(allModels, state.GetActions(),
+	public static List<HiddenMarkovModel<MultivariateNormalDistribution>> GetModels(Actions state) {
+		return ShamanicInterface.Utils.Utils.GetModelsWithCulture(allModels, state.GetActions(),
 		                                                     culturalLayer, culture);
 	}
 
@@ -128,14 +131,14 @@ public static class Game {
 		}
 	}
 
-	public static Classifier GetClassifier(State state) {
-		Classifier classifier = new Classifier(GetModels(state), state.GetActions());
+	public static HMMClassifier GetClassifier(Actions state) {
+		HMMClassifier classifier = new HMMClassifier(GetModels(state), state.GetActions());
 		classifier.StartClassifier();
 		return classifier;
 	}
 
-	public static State GameState() {
-		State state = new State("Game State");
+	public static Actions GameState() {
+		Actions state = new Actions("Game State");
 		state.AddAction("NOTHING");
 		state.AddAction("FRONT");
 		state.AddAction("RIGHT");
@@ -149,8 +152,8 @@ public static class Game {
 		return state;
 	}
 
-	public static State ChooseNumberState() {
-		State state = new State("Choose Number State");
+	public static Actions ChooseNumberState() {
+		Actions state = new Actions("Choose Number State");
 		state.AddAction("NOTHING");
 		state.AddAction("NUMBER_1");
 		state.AddAction("NUMBER_2");
@@ -158,16 +161,16 @@ public static class Game {
 		return state;
 	}
 
-	public static State StartGameState() {
-		State state = new State("Pause State");
+	public static Actions StartGameState() {
+		Actions state = new Actions("Pause State");
 		state.AddAction("NOTHING");
 		state.AddAction("YES");
 		state.AddAction("NO");
 		return state;
 	}
 
-	public static State PauseState() {
-		State state = new State("Pause State");
+	public static Actions PauseState() {
+		Actions state = new Actions("Pause State");
 		state.AddAction("NOTHING");
 		state.AddAction("RESUME");
 		state.AddAction("MUTE");
@@ -175,16 +178,16 @@ public static class Game {
 		return state;
 	}
 
-	public static State EndGameState() {
-		State state = new State("End Game State");
+	public static Actions EndGameState() {
+		Actions state = new Actions("End Game State");
 		state.AddAction("NOTHING");
 		state.AddAction("QUIT");
 		state.AddAction("RESUME");
 		return state;
 	}
 
-	public static State NothingState() {
-		State state = new State("Nothing State");
+	public static Actions NothingState() {
+		Actions state = new Actions("Nothing State");
 		state.AddAction("NOTHING");
 		return state;
 	}

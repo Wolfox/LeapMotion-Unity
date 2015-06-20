@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Leap;
-using Shamanic_Interface;
+using ShamanicInterface.Classifier;
 
 // Overall Controller object that will instantiate hands and tools when they appear.
 
@@ -349,7 +349,7 @@ public class HandController : MonoBehaviour {
     }
   }
 
-	public List<string> GetGestures(Classifier classifier) {
+	public List<string> GetGestures(HMMClassifier classifier) {
 		List<string> actions = new List<string>();
 
 		List<int> ids = new List<int> (hand_gestures_.Keys);

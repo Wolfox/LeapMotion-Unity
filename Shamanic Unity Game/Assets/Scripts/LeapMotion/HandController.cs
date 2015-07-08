@@ -49,10 +49,8 @@ public class HandController : MonoBehaviour {
 
   private bool flag_initialized_ = false;
   private bool show_hands_ = true;
-  /*private long prev_graphics_id_ = 0;
-  private long prev_physics_id_ = 0;*/
-	private Frame prevGraphicsFrame = new Frame();
-	private Frame prevPhysicsFrame = new Frame();
+  private long prev_graphics_id_ = 0;
+  private long prev_physics_id_ = 0;
   
   void OnDrawGizmos() {
     // Draws the little Leap Motion Controller in the Editor view.
@@ -259,6 +257,10 @@ public class HandController : MonoBehaviour {
 		return leap_controller_.Frame ();
 	}
 
+	public Frame GetPrevFrame() {
+		return leap_controller_.Frame(1);
+	}
+
 	void Update () {
 		if (leap_controller_ == null)
 			return;
@@ -275,10 +277,10 @@ public class HandController : MonoBehaviour {
 		}
 
 		if (show_hands_) {
-			if (frame.Id != prevGraphicsFrame.Id) {
+			if (frame.Id != prev_graphics_id_) {
 				UpdateHandModels (hand_graphics_, frame.Hands,
 				                  leftGraphicsModel, rightGraphicsModel);
-				prevGraphicsFrame = frame;
+				prev_graphics_id_ = frame.Id;
 			}
 		} else {
 			// Destroy all hands with defunct IDs.
@@ -295,13 +297,14 @@ public class HandController : MonoBehaviour {
 			return;
 
 		Frame frame = GetFrame ();
+		Frame prevFrame = GetPrevFrame();
 
-		if (frame.Id != prevPhysicsFrame.Id) {
+		if (frame.Id != prev_physics_id_) {
 			UpdateHandModels (hand_physics_, frame.Hands,
 			                  leftPhysicsModel, rightPhysicsModel);
-			UpdateHandGesture(frame.Hands, prevPhysicsFrame);
+			UpdateHandGesture(frame.Hands, prevFrame);
 //      UpdateToolModels(tools_, frame.Tools, toolModel);
-			prevPhysicsFrame = frame;
+			prev_physics_id_ = frame.Id;
 		}
 	}
 
